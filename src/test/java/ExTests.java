@@ -26,7 +26,6 @@ public class ExTests {
         capabilities.setCapability("app","/Users/liza/Desktop/JavaAppiumAutomation/apks/org.wikipedia.apk");
 
         driver = new AndroidDriver(new URL("http:127.0.0.1:4723/wd/hub"), capabilities);
-
     }
 
     @After
@@ -34,6 +33,11 @@ public class ExTests {
     {
         driver.quit();
     }
+
+    //search word
+    //ждем и проверяем что есть в результатах статья с этим словом
+    //отмена поиска
+    //проверка что результат пропал = что контейнера со списком статей
 
     @Test
     public void testCancelSearch()
@@ -50,13 +54,11 @@ public class ExTests {
                 "cannot find Search Wikipedia input",
                 15
         );
-
         waitForElementPresent(
                 By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Cashback']"),
                 "cannot find 'Cashback' topic searching by 'Cashback'",
                 15
         );
-
         waitForElementAndClear(
                 By.id("org.wikipedia:id/search_src_text"),
                 "Cannot find search field",
@@ -68,8 +70,9 @@ public class ExTests {
                 5
         );
         waitForElementNotPresent(
-                By.id("org.wikipedia:id/search_close_btn"),
-                "Cannot find X to cancel search",
+                //By.id("org.wikipedia:id/search_close_btn"),
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Cashback']"),
+                "Cannot find Cashback search",
                 5
         );
     }
