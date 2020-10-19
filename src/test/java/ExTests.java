@@ -35,26 +35,6 @@ public class ExTests {
         driver.quit();
     }
 
-     @Test
-         public void firstTest() {
-        waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find Search Wikipedia input",
-                5
-        );
-        waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                "JAVA",
-                "cannot find Search Wikipedia input",
-                15
-        );
-        waitForElementPresent(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
-                "cannot find 'Object-oriented programming language' topic searching by 'JAVA'",
-                5
-        );
-    }
-
     @Test
     public void testCancelSearch()
     {
@@ -66,10 +46,17 @@ public class ExTests {
 
         waitForElementAndSendKeys(
                 By.xpath("//*[contains(@text,'Search…')]"),
-                "JAVA",
+                "cashback",
                 "cannot find Search Wikipedia input",
                 15
         );
+
+        waitForElementPresent(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Cashback']"),
+                "cannot find 'Cashback' topic searching by 'Cashback'",
+                15
+        );
+
         waitForElementAndClear(
                 By.id("org.wikipedia:id/search_src_text"),
                 "Cannot find search field",
@@ -86,51 +73,18 @@ public class ExTests {
                 5
         );
     }
-
-    @Test
-    public void testCompareArticle()
-    {
-        waitForElementAndClick(
-                By.xpath("//*[contains(@text,'Search Wikipedia')]"),
-                "Cannot find Search Wikipedia input",
-                5
-        );
-        waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text,'Search…')]"),
-                "JAVA",
-                "cannot find Search Wikipedia input",
-                15
-        );
-        waitForElementAndClick(
-                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
-                "Cannot find Search Wikipedia input",
-                5
-        );
-        WebElement title_element = waitForElementPresent(
-                By.id("org.wikipedia:id/view_page_title_text"),
-                "Cannot find article title",
-                15
-        );
-        String article_title = title_element.getAttribute("text");
-        Assert.assertEquals(
-                "We see unexpected title",
-                "Java (programming language)",
-                article_title
-        );
-
-    }
         private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
-         {
-            WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-            wait.withMessage(error_message + "\n");
-            return wait.until(
-                ExpectedConditions.presenceOfElementLocated(by)
-            );
+        {
+       WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+       wait.withMessage(error_message + "\n");
+       return wait.until(
+               ExpectedConditions.presenceOfElementLocated(by)
+       );
         }
 
         private WebElement waitForElementPresent(By by, String error_message)
         {
-            return waitForElementPresent(by, error_message, 5);
+        return waitForElementPresent(by, error_message, 5);
         }
 
         private WebElement waitForElementAndClick(By by, String error_message, long timeoutInSeconds)
@@ -156,12 +110,14 @@ public class ExTests {
         );
     }
 
-    private WebElement waitForElementAndClear(By by, String error_message, long timeoutInSeconds)
-    {
-        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
-        element.clear();
-        return element;
-    }
+         private WebElement waitForElementAndClear(By by, String error_message, long timeoutInSeconds)
+        {
+             WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
+             element.clear();
+                return element;
+        }
 }
+
+
 
 
