@@ -34,6 +34,33 @@ public class ExTests {
         driver.quit();
     }
 
+    //testElementHasText
+    //click to Search Wiki
+    //Check the text for element
+
+    @Test
+    public void testElementHasText()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+        WebElement title_element = waitForElementPresent(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "Cannot find 'Search…",
+                5
+        );
+        String article_title = title_element.getAttribute("text");
+
+        Assert.assertEquals(
+                "We see text: Search",
+                "Search…",
+                article_title
+        );
+    }
+
+    //testCancelSearch
     //search word
     //ждем и проверяем что есть в результатах статья с этим словом
     //отмена поиска
