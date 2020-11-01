@@ -51,17 +51,10 @@ public class ExTests {
                 "Cannot find 'Search Wikipedia' input",
                 5
         );
-        WebElement title_element = waitForElementPresent(
+        assertElementHasText(
                 By.xpath("//*[contains(@text,'Search…')]"),
-                "Cannot find 'Search…",
-                5
-        );
-        String article_title = title_element.getAttribute("text");
-
-        Assert.assertEquals(
-                "We see text: Search",
                 "Search…",
-                article_title
+                "Search input not contains text 'Search...'"
         );
     }
 
@@ -361,6 +354,22 @@ public class ExTests {
     {
         WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
         return element.getAttribute(attribute);
+    }
+
+    private void assertElementHasText(By xpath, String article_title, String error_message)
+    {
+        WebElement title_element = waitForElementPresent(
+                By.xpath("//*[contains(@text,'Search…')]"),
+                "Cannot find 'Search…",
+                5
+        );
+        article_title = title_element.getAttribute("text");
+
+        Assert.assertEquals(
+                "We see text: Search",
+                "Search…",
+                article_title
+        );
     }
 }
 
