@@ -1,14 +1,13 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
 
 public class MyListsPageObject extends MainPageObject{
     private static final String
-            FOLDER_BY_NAME_TPL = "//*[@text='{FOLDER_NAME}']",
-            OK_BUTTON_MY_LIST = "//*[@text='OK']",
-            MY_LIST_XPATH = "//*[@text='Learning programming']",
-            ARTICLE_BY_TITLE_TPL = "//*[@text='{TITLE}']";
+            FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']",
+            OK_BUTTON_MY_LIST = "xpath://*[@text='OK']",
+            MY_LIST_XPATH = "xpath://*[@text='Learning programming']",
+            ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']";
 
     private static String getFolderXpathByName(String name_of_folder)
     {
@@ -28,7 +27,7 @@ public class MyListsPageObject extends MainPageObject{
     {
         String folder_name_xpath = getFolderXpathByName(name_of_folder);
         this.waitForElementAndClick(
-                By.xpath(folder_name_xpath),
+                folder_name_xpath,
                 "Cannot find created folder by name " + name_of_folder,
                 5
         );
@@ -36,7 +35,7 @@ public class MyListsPageObject extends MainPageObject{
     public void clickToMyList()
     {
         this.waitForElementAndClick(
-                By.xpath(MY_LIST_XPATH),
+                MY_LIST_XPATH,
                 "Cannot find folder for saving 2d article",
                 5
         );
@@ -44,7 +43,7 @@ public class MyListsPageObject extends MainPageObject{
     public void clickOkAfterCreateMyList()
     {
         this.waitForElementAndClick(
-                By.xpath(OK_BUTTON_MY_LIST),
+                OK_BUTTON_MY_LIST,
                 "Cannot press OK button'",
                 5
         );
@@ -53,7 +52,7 @@ public class MyListsPageObject extends MainPageObject{
     {
         String article_xpath = getSavedArticleXpathByTitle(article_title);
         this.swipeElementToLeft(
-                By.xpath(article_xpath),
+                article_xpath,
                 "Cannot find saved article"
         );
     }
