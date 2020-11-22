@@ -1,13 +1,15 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 
-public class MyListsPageObject extends MainPageObject{
-    private static final String
-            FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']",
-            OK_BUTTON_MY_LIST = "xpath://*[@text='OK']",
-            MY_LIST_XPATH = "xpath://*[@text='Learning programming']",
-            ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']";
+abstract public class MyListsPageObject extends MainPageObject{
+    protected static String
+            FOLDER_BY_NAME_TPL,
+            OK_BUTTON_MY_LIST,
+            MY_LIST_XPATH,
+            ARTICLE_BY_TITLE_TPL,
+            ARTICLE_BUTTON_DELETE;
 
     private static String getFolderXpathByName(String name_of_folder)
     {
@@ -55,5 +57,13 @@ public class MyListsPageObject extends MainPageObject{
                 article_xpath,
                 "Cannot find saved article"
         );
+        if (Platform.getInstance().isiOS()){
+            //this.clickElementToTheRightUpperCorner(article_xpath, "Cannot fined saved article");
+            this.waitForElementAndClick(
+                    ARTICLE_BUTTON_DELETE,
+                    "Cannot find button for delete article in saved",
+                    5
+            );
+        }
     }
 }
