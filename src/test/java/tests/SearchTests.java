@@ -19,4 +19,16 @@ public class SearchTests extends CoreTestCase {
         SearchPageObject.clickCancelSearch();
         SearchPageObject.waitForCancelButtonToDisAppear();
     }
+
+    @Test
+    //проверяет наличие текста ожидаемого текста у элемента
+    public void checkTextInputField(){
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.assertElementHasText(
+                "xpath://*[contains(@text,'Search Wikipedia')]",
+                "Search…",
+                "The expected text is not found."
+        );
+    }
 }

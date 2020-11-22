@@ -1,6 +1,8 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import org.junit.Assert;
+import org.openqa.selenium.WebElement;
 
 abstract public class SearchPageObject extends MainPageObject{
 
@@ -60,4 +62,12 @@ abstract public class SearchPageObject extends MainPageObject{
         this.waitForElementAndClick(SEARCH_CANCEL_BUTTON,"Cannot find and click cancel button", 10);
     }
 
+    public void assertElementHasText(String SEARCH_INIT_ELEMENT, String expected_text, String error_message)
+    {
+        WebElement element = waitForElementPresent(SEARCH_INIT_ELEMENT, error_message, 20);
+        String element_text = element.getAttribute("text");
+        Assert.assertEquals(error_message, expected_text, element_text);
+    }
 }
+
+
