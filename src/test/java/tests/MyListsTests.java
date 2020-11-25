@@ -32,9 +32,6 @@ public class MyListsTests extends CoreTestCase {
             ArticlePageObject.createNewMyList(name_Of_Folder);
             MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
             MyListsPageObject.clickOkAfterCreateMyList();
-            ArticlePageObject.closeArticleButton();
-
-            ArticlePageObject.addArticleToMySaved();
             ArticlePageObject.closeArticle();
 
 //------- Save 2d article
@@ -44,7 +41,7 @@ public class MyListsTests extends CoreTestCase {
             ArticlePageObject.waitForTitleElement();
             ArticlePageObject.callOptionAddToMyList();
             MyListsPageObject.clickToMyList();
-            ArticlePageObject.closeArticleButton();
+            ArticlePageObject.closeArticle();
 //------- Delete 1 article and check title of 2d
             NavigationUI NavigationUI = NavigationUIFactory.get(driver);
             NavigationUI.clickMyLists();
@@ -56,7 +53,7 @@ public class MyListsTests extends CoreTestCase {
             String article_title2 = ArticlePageObject.getArticleTitle();
             assertEquals(
                     "We see unexpected title",
-                    "Java (programming language)",
+                    "Java (disambiguation)",
                     article_title2
             );
         } else //for iOS
@@ -76,9 +73,8 @@ public class MyListsTests extends CoreTestCase {
 
             MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
             MyListsPageObject.swipeByArticleToDelete(article_title);
-
+            //check saved article
+            SearchPageObject.waitForSearchResult("Java (disambiguation)");
         }
-//check saved article 
-        SearchPageObject.waitForSearchResult("Java (disambiguation)");
     }
 }
