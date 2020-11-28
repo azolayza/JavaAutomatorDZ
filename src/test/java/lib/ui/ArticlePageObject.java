@@ -1,8 +1,8 @@
 package lib.ui;
 
-import io.appium.java_client.AppiumDriver;
 import lib.Platform;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 abstract public class ArticlePageObject extends MainPageObject{
     protected static String
@@ -15,7 +15,7 @@ abstract public class ArticlePageObject extends MainPageObject{
             MY_LIST_OK_BUTTON,
             CLOSE_ARTICLE_BUTTON;
 
-    public ArticlePageObject(AppiumDriver driver) {
+    public ArticlePageObject(RemoteWebDriver driver) {
         super(driver);
     }
 
@@ -23,13 +23,16 @@ abstract public class ArticlePageObject extends MainPageObject{
     {
         return this.waitForElementPresent(TITLE, "Cannot find article title on page",15);
     }
+
     public String getArticleTitle()
     {
         WebElement title_element = waitForTitleElement();
         if (Platform.getInstance().isAndroid()) {
             return title_element.getAttribute("text");
-        } else {
+        } else if (Platform.getInstance().isiOS()) {
             return title_element.getAttribute("name");
+        } else {
+            return title_element.getText();
         }
     }
 
