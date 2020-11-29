@@ -88,7 +88,7 @@ public class Platform {
 
         Map<String, Object> mobileEmulation = new HashMap<String, Object>();
         mobileEmulation.put("deviceMetrics",deviceMetrics);
-        mobileEmulation.put("userAgent", "Mozilla/5.0 (Linux; Android 8.0.0; TA-1053 Build/OPR1.170623.026) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3368.0 Mobile Safari/537.36");
+        mobileEmulation.put("userAgent", "Mozilla/5.0 (Linux; Android 8.1.0; Android SDK built for x86 Build/OSM1.180201.007) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.98 Mobile Safari/537.36");
 
         ChromeOptions chromeOptions = new ChromeOptions();
         chromeOptions.addArguments("Window-size=340,640");
