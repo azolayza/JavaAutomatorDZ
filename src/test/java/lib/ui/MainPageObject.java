@@ -4,14 +4,15 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.TouchAction;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
+import lib.Platform;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import lib.Platform;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class MainPageObject {
@@ -68,21 +69,6 @@ public class MainPageObject {
         element.clear();
         return element;
     }
-    /*public void clickElementToTheRightUpperCorner(String locator, String error_message)
-    {
-        WebElement element  = this.waitForElementPresent(locator + "/..", error_message);
-        int right_x = element.getLocation().getX();
-        int upper_y = element.getLocation().getY();
-        int lower_y = upper_y + element.getSize().getHeight();
-        int middle_y = (upper_y+lower_y)/2;
-        int width = element.getSize().getWidth();
-
-        int point_to_click_x = (right_x + width) - 3;
-        int point_to_click_y = middle_y;
-
-        TouchAction action = new TouchAction(driver);
-        action.tap(PointOption.point(point_to_click_x, point_to_click_y)).perform();
-    }*/
 
     public void swipeElementToLeft(String locator, String error_message)
     {
@@ -137,5 +123,33 @@ public class MainPageObject {
         }
     }
 
+    public int getAmountOfElements(String locator)
+    {
+        By by = this.getLocatorByString(locator);
+        List elements = driver.findElements(by);
+        return elements.size();
+    }
 
+    public boolean isElementPresent(String locator)
+    {
+        return getAmountOfElements(locator) > 0;
+    }
+
+    public void tryClickElementWithFewAttempts(String locator, String error_message, int amount_of_attempts)
+    {
+        int current_attempts = 0;
+        boolean need_more_attempts = true;
+
+        while (need_more_attempts) {
+            try {
+                this.waitForElementAndClick(locator, error_message, 1);
+                need_more_attempts = false;
+            } catch (Exception e) {
+                if (current_attempts>amount_of_attempts) {
+                    this.waitForElementAndClick(locator, error_message, 1);
+                }
+            }
+            ++current_attempts;
+    }
+    }
 }

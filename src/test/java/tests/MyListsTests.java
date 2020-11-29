@@ -2,10 +2,7 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.Platform;
-import lib.ui.ArticlePageObject;
-import lib.ui.MyListsPageObject;
-import lib.ui.NavigationUI;
-import lib.ui.SearchPageObject;
+import lib.ui.*;
 import lib.ui.factories.ArticlePageObjectFactory;
 import lib.ui.factories.MyListsPageObjectFactory;
 import lib.ui.factories.NavigationUIFactory;
@@ -14,6 +11,8 @@ import org.junit.Test;
 
 public class MyListsTests extends CoreTestCase {
     private static final String name_Of_Folder = "Learning programming";
+    private static final String login = "Azolayza";
+    private static final String password = "azolayza8601";
     @Test
     public void testSaveTwoArticlesToMyList(){
 
@@ -56,7 +55,8 @@ public class MyListsTests extends CoreTestCase {
                     "Java (disambiguation)",
                     article_title2
             );
-        } else //for iOS
+            //for iOS
+        } else if (Platform.getInstance().isiOS())
         {
             ArticlePageObject.addArticleToMySaved();
             ArticlePageObject.tapSavedListOverlay();
@@ -75,6 +75,34 @@ public class MyListsTests extends CoreTestCase {
             MyListsPageObject.swipeByArticleToDelete(article_title);
             //check saved article
             SearchPageObject.waitForSearchResult("Java (disambiguation)");
+        } else
+            //for MW
+        //----------Save 1 article for MW
+        {
+            AuthorizationPageObject Auth = new AuthorizationPageObject(driver);
+            Auth.clickAuthButton();
+            Auth.enterLoginData(login, password);
+            Auth.submitForm();
+
+            ArticlePageObject.waitForTitleElement();
+
+            assertEquals("We are not on the same page after login.",
+                    article_title,
+                    ArticlePageObject.getArticleTitle());
+
+            ArticlePageObject.addArticleToMySaved();
         }
+        //----------Save 2 article for MW
+        SearchPageObject.initSearchInput();
+        SearchPageObject.clickByArticleWithSubstring("Java (disambiguation)");
+        ArticlePageObject.waitForTitleElement();
+        ArticlePageObject.addArticleToMySaved();
+        //----------Delete and check
+        NavigationUI NavigationUI = NavigationUIFactory.get(driver);
+        NavigationUI.openNavigation();
+        NavigationUI.clickMyLists();
+        MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
+        MyListsPageObject.swipeByArticleToDelete(article_title);
+        MyListsPageObject.savedListResult();
     }
 }

@@ -11,6 +11,7 @@ abstract public class ArticlePageObject extends MainPageObject{
             ADD_TO_MY_LIST_OVERLAY,
             SAVE_LIST_OVERLAY_CLOSE_BUTTON,
             OPTIONS_ADD_TO_MY_LIST,
+            OPTIONS_REMOVE_FROM_MY_LIST,
             MY_LIST_NAME_INPUT,
             MY_LIST_OK_BUTTON,
             CLOSE_ARTICLE_BUTTON;
@@ -91,13 +92,33 @@ abstract public class ArticlePageObject extends MainPageObject{
 
     public void tapSavedListOverlay()
     {
-        this.waitForElementAndClick(
-                SAVE_LIST_OVERLAY_CLOSE_BUTTON,
-                "Cannot find button 'X' for close overlay",
-                5
-        );
+        if (Platform.getInstance().isiOS() || Platform.getInstance().isAndroid())
+        {
+            this.waitForElementAndClick(
+                    SAVE_LIST_OVERLAY_CLOSE_BUTTON,
+                    "Cannot find button 'X' for close overlay",
+                    5
+            );
+        } else
+            {
+            System.out.println("Method closeArticle() do nothing for platfom" + Platform.getInstance().getPlatformVar());
+            }
     }
     public void addArticleToMySaved(){
+        if (Platform.getInstance().isMv()) {
+            this.removeArticleFromSavedIfItAdded();
+        }
         this.waitForElementAndClick(OPTIONS_ADD_TO_MY_LIST, "Cannot find option to add article to reading list", 5);
+    }
+
+    public void removeArticleFromSavedIfItAdded()
+    {
+        if (this.isElementPresent(OPTIONS_REMOVE_FROM_MY_LIST)) {
+            this.waitForElementAndClick(OPTIONS_REMOVE_FROM_MY_LIST,
+                    "Cannot click button to remove an article from saved",
+                    1);
+            this.waitForElementPresent(OPTIONS_ADD_TO_MY_LIST,
+                    "Cannot find button to add an article to saved list after removing it from this list before");
+        }
     }
 }

@@ -9,20 +9,28 @@ abstract public class MyListsPageObject extends MainPageObject{
             OK_BUTTON_MY_LIST,
             MY_LIST_XPATH,
             ARTICLE_BY_TITLE_TPL,
-            ARTICLE_BUTTON_DELETE;
+            ARTICLE_BUTTON_DELETE,
+            REMOVE_FROM_SAVED_BUTTON,
+            MY_LIST_ARTICLE_CONTAINER;
+
+    public MyListsPageObject(RemoteWebDriver driver)
+    {
+        super(driver);
+    }
 
     private static String getFolderXpathByName(String name_of_folder)
     {
         return FOLDER_BY_NAME_TPL.replace("{FOLDER_MANE}", name_of_folder);
     }
+
     private static String getSavedArticleXpathByTitle(String article_title)
     {
         return ARTICLE_BY_TITLE_TPL.replace("{TITLE}", article_title);
     }
 
-    public MyListsPageObject(RemoteWebDriver driver)
+    private static String getRemoveButtonByTitle(String article_title)
     {
-        super(driver);
+        return REMOVE_FROM_SAVED_BUTTON.replace("{TITLE}", article_title);
     }
 
     public void openFolderByName(String name_of_folder)
@@ -53,17 +61,36 @@ abstract public class MyListsPageObject extends MainPageObject{
     public void swipeByArticleToDelete(String article_title)
     {
         String article_xpath = getSavedArticleXpathByTitle(article_title);
-        this.swipeElementToLeft(
-                article_xpath,
-                "Cannot find saved article"
-        );
+        if (Platform.getInstance().isiOS()||Platform.getInstance().isAndroid())
+        {
+            this.swipeElementToLeft(
+                    article_xpath,
+                    "Cannot find saved article"
+            );
+        } else {
+            String remove_locator = getRemoveButtonByTitle(article_title);
+            this.waitForElementAndClick(
+                    remove_locator,
+                    "Cannot click button to remove article from saved",
+                    10
+            );
+        }
         if (Platform.getInstance().isiOS()){
-            //this.clickElementToTheRightUpperCorner(article_xpath, "Cannot fined saved article");
             this.waitForElementAndClick(
                     ARTICLE_BUTTON_DELETE,
                     "Cannot find button for delete article in saved",
                     5
             );
+        }
+        if (Platform.getInstance().isMv()) {
+            driver.navigate().refresh();
+        }
+    }
+
+    public void savedListResult()
+    {
+        if (Platform.getInstance().isMv()) {
+           this.isElementPresent(MY_LIST_ARTICLE_CONTAINER);
         }
     }
 }

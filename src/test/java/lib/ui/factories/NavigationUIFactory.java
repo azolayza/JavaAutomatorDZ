@@ -11,7 +11,10 @@ public class NavigationUIFactory {
     {
         if (Platform.getInstance().isAndroid()){
             return new AndroidNavigationUI(driver);
+        } else if (Platform.getInstance().isiOS()){
+            return new iOSNavigationUI(driver);
         } else {
-            return new iOSNavigationUI(driver);}
+            return new iOSNavigationUI(driver);
+        }
         }
     }
